@@ -1,0 +1,2 @@
+# Hospital app package initializer
+

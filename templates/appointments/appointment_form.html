@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block title %}New Appointment{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card hms-auth-card shadow-sm fade-in-up">
+      <div class="card-body">
+        <div class="hms-kicker mb-3">Appointment Booking</div>
+        <h1 class="h4 fw-bold mb-2">Request a consultation</h1>
+        <p class="text-muted mb-4">Choose a hospital, filter specialists, and submit your appointment request with the details doctors need.</p>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Hospital</label>
+              {{ form.hospital }}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Specialization</label>
+              <select id="specialtyFilter" class="form-select form-select-lg">
+                <option value="">All specializations</option>
+                {% for s in specialties %}
+                <option value="{{ s }}">{{ s }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Doctor</label>
+              <select name="doctor" id="doctorSelect" class="form-select form-select-lg" {% if form.is_bound %}data-selected-id="{{ form.data.doctor }}"{% endif %}>
+                <option value="">Select doctor</option>
+                {% for d in doctors_list %}
+                <option value="{{ d.id }}" data-hospital="{{ d.hospital_id }}" data-specialization="{{ d.specialization }}">{{ d.label }}</option>
+                {% endfor %}
+              </select>
+              <div class="form-text mt-1">Specialist: <span id="selectedSpec">—</span></div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Date</label>
+              {{ form.date }}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Time (12-hour)</label>
+              <div class="d-flex gap-2">
+                <select id="timeHour" class="form-select">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <select id="timeMinute" class="form-select">
+                  <option value="00">00</option>
+                  <option value="15">15</option>
+                  <option value="30">30</option>
+                  <option value="45">45</option>
+                </select>
+                <select id="timeAmPm" class="form-select">
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
+              <input type="hidden" name="time" id="timeInput" {% if form.is_bound %}value="{{ form.data.time }}"{% endif %}>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Notes</label>
+              {{ form.notes }}
+            </div>
+          </div>
+          <div class="mt-4 d-flex flex-wrap gap-2">
+            <button class="btn btn-primary">Submit Request</button>
+            <a class="btn btn-ghost-light" href="{% url 'appointments:patient_dashboard' %}">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  (function() {
+    const docSelect = document.getElementById('doctorSelect');
+    const hospSelect = document.querySelector('[name="hospital"]');
+    const specFilter = document.getElementById('specialtyFilter');
+    const specLabel = document.getElementById('selectedSpec');
+    const allOptions = Array.from(docSelect.querySelectorAll('option')).filter(o => o.value);
+
+    function rebuildDoctorOptions() {
+      const hospId = hospSelect && hospSelect.value ? parseInt(hospSelect.value, 10) : null;
+      const spec = specFilter && specFilter.value ? specFilter.value : '';
+      const selectedId = docSelect.getAttribute('data-selected-id') || docSelect.value;
+      while (docSelect.options.length > 0) docSelect.remove(0);
+      const placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.textContent = 'Select doctor';
+      docSelect.appendChild(placeholder);
+      allOptions.forEach(opt => {
+        const optHosp = parseInt(opt.getAttribute('data-hospital'), 10);
+        const optSpec = opt.getAttribute('data-specialization') || '';
+        if ((hospId === null || optHosp === hospId) && (!spec || optSpec === spec)) {
+          const clone = opt.cloneNode(true);
+          if (selectedId && selectedId === clone.value) clone.selected = true;
+          docSelect.appendChild(clone);
+        }
+      });
+      updateSelectedSpec();
+    }
+
+    function updateSelectedSpec() {
+      const selOpt = docSelect.options[docSelect.selectedIndex];
+      const s = selOpt && selOpt.getAttribute ? selOpt.getAttribute('data-specialization') : '';
+      specLabel.textContent = s || '—';
+    }
+
+    function pad2(n) { return n.toString().padStart(2, '0'); }
+    function updateHiddenTime() {
+      const h12 = parseInt(document.getElementById('timeHour').value, 10);
+      const m = document.getElementById('timeMinute').value;
+      const ap = document.getElementById('timeAmPm').value;
+      let h24 = h12 % 12;
+      if (ap === 'PM') h24 += 12;
+      const val = pad2(h24) + ':' + m;
+      document.getElementById('timeInput').value = val;
+    }
+    function prefillTime() {
+      const hidden = document.getElementById('timeInput');
+      const v = hidden.value || '';
+      if (!v) return;
+      const parts = v.split(':');
+      if (parts.length < 2) return;
+      let h = parseInt(parts[0], 10);
+      const m = parts[1];
+      let ap = 'AM';
+      if (h === 0) { h = 12; ap = 'AM'; }
+      else if (h === 12) { ap = 'PM'; }
+      else if (h > 12) { h = h - 12; ap = 'PM'; }
+      document.getElementById('timeHour').value = String(h);
+      document.getElementById('timeMinute').value = m.padStart(2, '0');
+      document.getElementById('timeAmPm').value = ap;
+    }
+    function ensureTimeInitialized() {
+      const hidden = document.getElementById('timeInput');
+      if (!hidden.value) updateHiddenTime();
+    }
+
+    if (hospSelect) hospSelect.addEventListener('change', () => { rebuildDoctorOptions(); });
+    if (specFilter) specFilter.addEventListener('change', () => { rebuildDoctorOptions(); });
+    docSelect.addEventListener('change', () => { docSelect.removeAttribute('data-selected-id'); updateSelectedSpec(); });
+
+    document.getElementById('timeHour').addEventListener('change', updateHiddenTime);
+    document.getElementById('timeMinute').addEventListener('change', updateHiddenTime);
+    document.getElementById('timeAmPm').addEventListener('change', updateHiddenTime);
+
+    rebuildDoctorOptions();
+    prefillTime();
+    ensureTimeInitialized();
+  })();
+</script>
+{% endblock %}

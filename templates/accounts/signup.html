@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up • CareMatrix{% endblock %}
+{% block content %}
+<section class="fade-in-up">
+  <div class="row justify-content-center align-items-start g-4">
+    <div class="col-lg-7">
+      <div class="card hms-auth-card">
+        <div class="card-body">
+          <div class="hms-kicker mb-3">Create Account</div>
+          <h1 class="h3 fw-bold mb-2">Join the CareMatrix website</h1>
+          <p class="text-muted mb-4">Set up your role and get routed into the right experience for hospital administration, patient access, or clinical workflows.</p>
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">First name</label>
+                {{ form.first_name }}
+                <div class="text-danger small mt-1">{{ form.first_name.errors }}</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Last name</label>
+                {{ form.last_name }}
+                <div class="text-danger small mt-1">{{ form.last_name.errors }}</div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Username</label>
+                {{ form.username }}
+                <div class="text-danger small mt-1">{{ form.username.errors }}</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Email</label>
+                {{ form.email }}
+                <div class="text-danger small mt-1">{{ form.email.errors }}</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Mobile number</label>
+                {{ form.phone_number }}
+                <div class="text-danger small mt-1">{{ form.phone_number.errors }}</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Password</label>
+                {{ form.password1 }}
+                <div class="text-danger small mt-1">{{ form.password1.errors }}</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Confirm password</label>
+                {{ form.password2 }}
+                <div class="text-danger small mt-1">{{ form.password2.errors }}</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Role</label>
+                {{ form.role }}
+                <div class="text-danger small mt-1">{{ form.role.errors }}</div>
+              </div>
+              <div class="col-md-6" id="hospitalGroup">
+                <label class="form-label">Hospital</label>
+                {{ form.hospital }}
+                <div class="text-danger small mt-1">{{ form.hospital.errors }}</div>
+              </div>
+
+              <div class="col-12" id="specializationGroup">
+                <label class="form-label">Specialization (Doctor only)</label>
+                {{ form.specialization }}
+                <div class="text-danger small mt-1">{{ form.specialization.errors }}</div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">Create Account</button>
+
+            <div class="text-center text-muted small mt-3">
+              Already have an account?
+              <a href="{% url 'accounts:login' %}" class="link-light">Login</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card hms-info-card">
+        <div class="card-body p-4">
+          <div class="hms-kicker mb-3">Account Types</div>
+          <div class="vstack gap-3">
+            <div>
+              <div class="fw-semibold">Patient</div>
+              <div class="text-muted small">Book appointments, discover doctors, and track request status.</div>
+            </div>
+            <div>
+              <div class="fw-semibold">Doctor</div>
+              <div class="text-muted small">Review incoming appointments and manage approvals with hospital context.</div>
+            </div>
+            <div>
+              <div class="fw-semibold">Attendant</div>
+              <div class="text-muted small">Handle assigned room workflows and patient count updates.</div>
+            </div>
+          </div>
+          <div class="hms-divider"></div>
+          <p class="text-muted small mb-0">Hospital selection appears when the selected role needs a hospital assignment, and specialization appears for doctor accounts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    const roleEl = document.getElementById('id_role');
+    const hospitalGroup = document.getElementById('hospitalGroup');
+    const specializationGroup = document.getElementById('specializationGroup');
+    if (!roleEl || !hospitalGroup || !specializationGroup) return;
+
+    function applyVisibility() {
+      const role = roleEl.value;
+      const showHospital = (role === 'DOCTOR' || role === 'ATTENDANT');
+      const showSpecialization = (role === 'DOCTOR');
+
+      hospitalGroup.style.display = showHospital ? '' : 'none';
+      specializationGroup.style.display = showSpecialization ? '' : 'none';
+    }
+
+    roleEl.addEventListener('change', applyVisibility);
+    applyVisibility();
+  })();
+</script>
+{% endblock %}

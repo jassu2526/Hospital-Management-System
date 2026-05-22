@@ -1,0 +1,2 @@
+# Appointments app package initializer
+

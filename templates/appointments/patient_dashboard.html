@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Patient Dashboard{% endblock %}
+{% block content %}
+<div class="card hero shadow-sm overflow-hidden mb-4">
+  <div class="row g-0 align-items-center">
+    <div class="col-md-8 p-4">
+      <div class="title h4 mb-2">Patient Portal</div>
+      <div class="subtitle">Book appointments and track their status easily.</div>
+    </div>
+    <div class="col-md-4 text-end p-3">
+      <img src="{% static 'img/patient.svg' %}" alt="Patient" class="img-hero">
+    </div>
+  </div>
+</div>
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card shadow-sm stat-card">
+      <div class="card-body">
+        <div class="stat-label">Total Requests</div>
+        <div class="stat-value">{{ appt_total|default:0 }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm stat-card">
+      <div class="card-body">
+        <div class="stat-label">Pending</div>
+        <div class="stat-value">{{ appt_pending|default:0 }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm stat-card">
+      <div class="card-body">
+        <div class="stat-label">Approved</div>
+        <div class="stat-value">{{ appt_approved|default:0 }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm stat-card">
+      <div class="card-body">
+        <div class="stat-label">Rejected</div>
+        <div class="stat-value">{{ appt_rejected|default:0 }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-8">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="mb-0">Status Overview</h6>
+          <a class="btn btn-sm btn-primary" href="{% url 'appointments:new' %}"><i class="fa fa-plus"></i> Book Appointment</a>
+        </div>
+        <div style="height:220px">
+          <canvas id="patientStatusChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="mb-2">Quick Actions</h6>
+        <div class="d-grid gap-2">
+          <a class="btn btn-outline-primary" href="{% url 'appointments:new' %}">Book New Appointment</a>
+          <a class="btn btn-outline-secondary" href="{% url 'accounts:dashboard' %}">Go to Dashboard</a>
+        </div>
+        <div class="text-muted small mt-3">You can track approval status here after booking.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5>My Appointments</h5>
+  <a class="btn btn-primary" href="{% url 'appointments:new' %}"><i class="fa fa-plus"></i> Book Appointment</a>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Doctor</th>
+              <th>Hospital</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in appointments %}
+            <tr>
+              <td>{{ a.date }}</td>
+              <td>{{ a.time }}</td>
+              <td>{{ a.doctor }}</td>
+              <td>{{ a.hospital }}</td>
+              <td>
+                {% if a.status == 'PENDING' %}
+                  <span class="badge bg-warning text-dark">Pending</span>
+                {% elif a.status == 'APPROVED' %}
+                  <span class="badge bg-success">Approved</span>
+                {% else %}
+                  <span class="badge bg-danger">Rejected</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-center text-muted">No appointments</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h6 class="mb-0">Hospitals (Visakhapatnam)</h6>
+      <span class="badge bg-light text-primary border"><i class="fa fa-location-dot"></i> Andhra Pradesh</span>
+    </div>
+
+    <div class="vstack gap-3">
+      {% for h in hospitals_vizag %}
+        <div class="card shadow-sm hms-hospital-card overflow-hidden">
+          <div class="hms-hospital-banner">
+            {% if h.photo_url %}
+              <img src="{{ h.photo_url }}" alt="{{ h.name }}">
+            {% else %}
+              <img src="{% static 'img/hospital.svg' %}" alt="{{ h.name }}">
+            {% endif %}
+            <div class="hms-hospital-overlay"></div>
+            <div class="hms-hospital-banner-text">
+              <div class="fw-bold">{{ h.name }}</div>
+              <div class="small opacity-75">{{ h.city }}, {{ h.state }}</div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="small text-muted">Meet Our Doctors</div>
+              <a class="btn btn-sm btn-primary" href="{% url 'appointments:new' %}">Book</a>
+            </div>
+
+            <div class="vstack gap-2">
+              {% for d in h.doctors.all %}
+                <div class="d-flex align-items-center gap-2">
+                  <div class="hms-avatar">
+                    {% if d.photo_url %}
+                      <img src="{{ d.photo_url }}" alt="{{ d }}">
+                    {% else %}
+                      <img src="{% static 'img/doctor.svg' %}" alt="{{ d }}">
+                    {% endif %}
+                  </div>
+                  <div class="flex-grow-1">
+                    <div class="fw-semibold small">{{ d }}</div>
+                    <div class="text-muted small">{{ d.specialization|default:"General" }}</div>
+                  </div>
+                </div>
+              {% empty %}
+                <div class="text-muted small">No doctors listed for this hospital yet.</div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="card shadow-sm">
+          <div class="card-body text-muted">No hospitals available for Visakhapatnam, Andhra Pradesh.</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% block extra_js %}
+<script>
+  fetch("{% url 'appointments:api_patient_status_summary' %}", {credentials:'same-origin'})
+    .then(r => r.json())
+    .then(json => {
+      const el = document.getElementById('patientStatusChart');
+      if (!el) return;
+      const labels = ['PENDING','APPROVED','REJECTED'];
+      const data = labels.map(l => json[l] || 0);
+      new Chart(el, {
+        type: 'doughnut',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: ['#ffc107','#198754','#dc3545']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '65%',
+          plugins: {
+            legend: { position: 'top', labels: { boxWidth: 12 } }
+          }
+        }
+      });
+    });
+</script>
+{% endblock %}
+{% endblock %}
+

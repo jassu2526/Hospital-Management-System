@@ -1,0 +1,222 @@
+{% load static %}
+{% extends 'base.html' %}
+{% block title %}Welcome • CareMatrix{% endblock %}
+{% block body_class %}hms-public-body{% endblock %}
+{% block main_class %}container-fluid px-0 hms-public-main{% endblock %}
+{% block site_header %}
+<header class="hms-public-header">
+  <div class="hms-topbar">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <div class="small d-flex flex-wrap align-items-center gap-3">
+        <span><i class="fa-solid fa-phone"></i> 080 47091894</span>
+        <span><i class="fa-solid fa-envelope"></i> contactus@carematrix.com</span>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <a href="{% url 'accounts:services' %}" class="btn btn-light btn-sm hms-public-pill">Schedule a Demo</a>
+        <a href="{% url 'accounts:login' %}" class="btn btn-success btn-sm hms-public-pill">Login</a>
+      </div>
+    </div>
+  </div>
+  <nav class="navbar navbar-expand-lg hms-public-navbar">
+    <div class="container py-3">
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-3" href="{% url 'accounts:home' %}">
+        <span class="hms-public-logo-mark"><i class="fa-solid fa-plus"></i></span>
+        <span class="hms-public-logo-text">
+          <span class="d-block hms-logo-title">CareMatrix</span>
+          <span class="d-block hms-logo-subtitle">Connected Healthcare</span>
+        </span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="publicNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+          <li class="nav-item"><a class="nav-link" href="{% url 'accounts:services' %}">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'accounts:about' %}">Solutions</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'accounts:whats_new' %}">Why CareMatrix?</a></li>
+          <li class="nav-item">
+            <a class="btn btn-success hms-demo-btn" href="{% url 'accounts:signup' %}">
+              <i class="fa-solid fa-arrow-right"></i> Book A Free Demo
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+{% endblock %}
+{% block content %}
+<section class="hms-public-hero">
+  <div class="container">
+    <div class="row align-items-center g-4 g-xl-5">
+      <div class="col-lg-4">
+        <div class="hms-public-trust-badge">
+          <i class="fa-solid fa-star"></i> Trusted by {{ site_stats.hospitals|default:"400+" }}+ Healthcare Facilities
+        </div>
+        <h1 class="hms-public-title mt-3">Healthcare Operations, Simplified.</h1>
+        <p class="hms-public-copy">An enterprise-grade Hospital Management System that unifies appointments, EMR/EHR, billing, pharmacy, diagnostics, and patient workflows into a single secure and integrated ecosystem.</p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a href="{% url 'accounts:signup' %}" class="btn btn-primary hms-public-cta"><i class="fa-solid fa-circle-play"></i> Book A Free Demo</a>
+          <a href="{% url 'accounts:services' %}" class="btn btn-outline-primary hms-public-cta-outline">Watch How It Works</a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="hms-image-stack">
+          <div class="hms-image-stack-main">
+            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80" alt="Healthcare team reviewing patient data">
+          </div>
+          <div class="hms-image-stack-card hms-image-stack-card-top">
+            <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=900&q=80" alt="Doctor using tablet in hospital">
+            <div class="hms-image-stack-label">Real-time doctor workflow</div>
+          </div>
+          <div class="hms-image-stack-card hms-image-stack-card-bottom">
+            <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=80" alt="Patient care and bedside support">
+            <div class="hms-image-stack-label">Patient-first experiences</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="hms-one-stop-card">
+          <div class="hms-one-stop-title">ONE <span>+</span> STOP</div>
+          <div class="hms-one-stop-subtitle">HEALTHCARE SOLUTION</div>
+          <div class="hms-one-stop-grid">
+            <span>Hospital Management</span>
+            <span>Clinic Management</span>
+            <span>Appointments</span>
+            <span>Pharmacy</span>
+            <span>EMR / EHR</span>
+            <span>IP Management</span>
+            <span>LIMS</span>
+            <span>IVR</span>
+            <span>Telemedicine</span>
+            <span>Stock & Inventory</span>
+            <span>Vaccination</span>
+            <span>Revenue & Analytics</span>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section class="hms-public-trust-section">
+  <div class="container">
+    <div class="row g-4 align-items-stretch">
+      <div class="col-lg-3">
+        <div class="hms-blue-panel">
+          <div class="hms-shield-icon"><i class="fa-solid fa-shield-heart"></i></div>
+          <h3>DPDP-Ready, HIPAA Compliant &amp; 100% Data Secure</h3>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="hms-trust-wrapper">
+          <div class="row g-3 align-items-stretch">
+            <div class="col-lg-4">
+              <div class="hms-trust-copy">
+                <h2>A Platform You Can Trust</h2>
+                <p>Built for hospitals, clinics, labs, and growing healthcare networks that need one connected operational layer.</p>
+              </div>
+              <div class="row g-3">
+                <div class="col-6">
+                  <div class="hms-stat-tile">
+                    <strong>13+</strong>
+                    <span>Years of innovation</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="hms-stat-tile">
+                    <strong>{{ site_stats.hospitals }}+</strong>
+                    <span>Connected facilities</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div class="hms-healthcare-panel">
+                <div class="hms-panel-head">HEALTHCARE</div>
+                <div class="row g-4 align-items-center">
+                  <div class="col-md-6">
+                    <h3>Software Built For</h3>
+                    <ul class="hms-public-list">
+                      <li>Hospitals and healthcare groups</li>
+                      <li>Clinics and outpatient care</li>
+                      <li>Diagnostics, pharmacy, and lab workflows</li>
+                      <li>Appointments, records, and billing</li>
+                    </ul>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="hms-dashboard-card">
+                      <div class="hms-dashboard-chart"></div>
+                      <div class="hms-dashboard-row"></div>
+                      <div class="hms-dashboard-row short"></div>
+                      <div class="hms-dashboard-row"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hms-visual-section">
+  <div class="container">
+    <div class="row align-items-center mb-4 g-3">
+      <div class="col-lg-7">
+        <span class="hms-section-chip">Interactive Care Journey</span>
+        <h2 class="hms-visual-title">Explore the hospital experience through engaging visual blocks.</h2>
+        <p class="hms-visual-copy">These interactive pictures make the website feel more alive for users, while also guiding them through hospital discovery, consultations, and digital operations.</p>
+      </div>
+      <div class="col-lg-5 text-lg-end">
+        <a href="{% url 'accounts:services' %}" class="btn btn-outline-primary hms-public-cta-outline">Explore More Features</a>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-xl-4">
+        <article class="hms-photo-card">
+          <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80" alt="Hospital building exterior">
+          <div class="hms-photo-card-overlay">
+            <span class="hms-photo-chip">Hospitals</span>
+            <h3>Discover hospitals with confidence</h3>
+            <p>Show modern healthcare infrastructure, trusted facilities, and cleaner navigation for patients.</p>
+          </div>
+        </article>
+      </div>
+      <div class="col-md-6 col-xl-4">
+        <article class="hms-photo-card">
+          <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=1200&q=80" alt="Doctor consulting patient">
+          <div class="hms-photo-card-overlay">
+            <span class="hms-photo-chip">Consultations</span>
+            <h3>Make appointments feel human</h3>
+            <p>Interactive pictures help users understand online booking, approvals, and specialist care faster.</p>
+          </div>
+        </article>
+      </div>
+      <div class="col-md-6 col-xl-4">
+        <article class="hms-photo-card">
+          <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80" alt="Healthcare analytics dashboard">
+          <div class="hms-photo-card-overlay">
+            <span class="hms-photo-chip">Analytics</span>
+            <h3>Visualize operations in one place</h3>
+            <p>Use imagery and motion to communicate dashboards, occupancy, and healthcare workflows clearly.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block site_footer %}
+<footer class="hms-public-footer">
+  <div class="container py-4 d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <div class="small text-muted">CareMatrix HMS for hospitals, clinics, diagnostics and connected healthcare teams.</div>
+    <div class="d-flex gap-3 small">
+      <a href="{% url 'accounts:about' %}">About</a>
+      <a href="{% url 'accounts:services' %}">Products</a>
+      <a href="{% url 'accounts:login' %}">Login</a>
+    </div>
+  </div>
+</footer>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}About • CareMatrix{% endblock %}
+{% block content %}
+<section class="fade-in-up">
+  <div class="row g-4 align-items-stretch">
+    <div class="col-lg-7">
+      <div class="card hms-feature-card">
+        <div class="card-body p-4 p-md-5">
+          <div class="hms-kicker mb-3">About CareMatrix</div>
+          <h1 class="display-6 fw-bold mb-3">Healthcare operations should feel modern, connected, and easy to use.</h1>
+          <p class="text-muted">CareMatrix is built to serve hospitals as a website and an operations platform at the same time. It supports patients booking care, doctors managing appointments, attendants handling room workflows, and admins tracking occupancy across facilities.</p>
+          <div class="hms-divider"></div>
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <div class="hms-mini-stat">
+                <div class="text-muted small">Live Hospitals</div>
+                <div class="h3 fw-bold mb-0">{{ site_stats.hospitals }}</div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="hms-mini-stat">
+                <div class="text-muted small">Registered Doctors</div>
+                <div class="h3 fw-bold mb-0">{{ site_stats.doctors }}</div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="hms-mini-stat">
+                <div class="text-muted small">Patient Records</div>
+                <div class="h3 fw-bold mb-0">{{ site_stats.patients }}</div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="hms-mini-stat">
+                <div class="text-muted small">Appointments Logged</div>
+                <div class="h3 fw-bold mb-0">{{ site_stats.appointments }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card hms-info-card h-100">
+        <div class="hms-inline-photo hms-inline-photo-tall">
+          <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1200&q=80" alt="Nurse supporting patient care">
+          <div class="hms-inline-photo-badge">User-friendly healthcare journeys</div>
+        </div>
+        <div class="card-body p-4 p-md-5">
+          <div class="hms-kicker mb-3">Mission</div>
+          <h2 class="h4 mb-3">Better care through better visibility</h2>
+          <p class="text-muted">The platform focuses on practical hospital operations: fewer blind spots, faster coordination, and a much more inviting digital experience for end users.</p>
+          <div class="vstack gap-3 mt-4">
+            <div class="hms-chip"><i class="fa-solid fa-shield-heart"></i> Secure role-based access</div>
+            <div class="hms-chip"><i class="fa-solid fa-bed-pulse"></i> Occupancy-aware hospital management</div>
+            <div class="hms-chip"><i class="fa-solid fa-calendar-check"></i> Clean appointment workflows</div>
+            <div class="hms-chip"><i class="fa-solid fa-chart-simple"></i> Visual dashboards and status tracking</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-5">
+  <div class="row g-3">
+    <div class="col-md-6 col-xl-4">
+      <div class="card hms-feature-card fade-in-up">
+        <div class="hms-service-photo">
+          <img src="https://images.unsplash.com/photo-1519494080410-f9aa8f52f2c1?auto=format&fit=crop&w=900&q=80" alt="Hospital reception and care team">
+        </div>
+        <div class="card-body">
+          <div class="hms-icon-circle mb-3"><i class="fa-solid fa-hospital"></i></div>
+          <div class="fw-semibold mb-2">Multi-hospital visibility</div>
+          <div class="text-muted small">Track hospital resources, room capacity, and operational context from a central experience.</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-4">
+      <div class="card hms-feature-card fade-in-up">
+        <div class="hms-service-photo">
+          <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=80" alt="Doctor specialist consultation">
+        </div>
+        <div class="card-body">
+          <div class="hms-icon-circle mb-3"><i class="fa-solid fa-user-doctor"></i></div>
+          <div class="fw-semibold mb-2">Specialist discovery</div>
+          <div class="text-muted small">Surface doctors by hospital and specialization so patients can book with more confidence.</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-4">
+      <div class="card hms-feature-card fade-in-up">
+        <div class="hms-service-photo">
+          <img src="https://images.unsplash.com/photo-1571772996211-2f02c9727629?auto=format&fit=crop&w=900&q=80" alt="Healthcare team collaborating around system dashboard">
+        </div>
+        <div class="card-body">
+          <div class="hms-icon-circle mb-3"><i class="fa-solid fa-users"></i></div>
+          <div class="fw-semibold mb-2">Role-specific dashboards</div>
+          <div class="text-muted small">Every user group lands on the tools and information that matter most to them.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-5">
+  <div class="card hms-info-card fade-in-up">
+    <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div>
+        <div class="fw-semibold mb-1">Keep exploring the rebuilt experience</div>
+        <div class="text-muted small">Browse services or check the latest updates added across the site.</div>
+      </div>
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-light" href="{% url 'accounts:services' %}">Services</a>
+        <a class="btn btn-primary" href="{% url 'accounts:whats_new' %}">What's New</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

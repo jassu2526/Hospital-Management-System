@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="card hero shadow-sm overflow-hidden mb-4">
+  <div class="row g-0 align-items-center">
+    <div class="col-md-8 p-4">
+      <div class="title h4 mb-2">Hospital Administration</div>
+      <div class="subtitle">Monitor occupancy, rooms, doctors and patients in real time.</div>
+    </div>
+    <div class="col-md-4 text-end p-3">
+      <img src="{% static 'img/hospital.svg' %}" alt="Hospital" class="img-hero">
+    </div>
+  </div>
+  </div>
+<div class="row g-3">
+  <div class="col-md-3">
+    <div class="card stat-card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="stat-label">Patients</div>
+            <div class="stat-value" id="patientsCount">{{ total_patients }}</div>
+          </div>
+          <i class="fa-solid fa-user-injured fa-2x text-primary"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card stat-card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="stat-label">Doctors</div>
+            <div class="stat-value" id="doctorsCount">{{ total_doctors }}</div>
+          </div>
+          <i class="fa-solid fa-user-doctor fa-2x text-primary"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card stat-card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="stat-label">Rooms</div>
+            <div class="stat-value" id="roomsCount">{{ total_rooms }}</div>
+          </div>
+          <i class="fa-solid fa-house-medical fa-2x text-primary"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card stat-card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="stat-label">Occupancy</div>
+            <div class="stat-value" id="occupancyPct">{{ occupancy }}%</div>
+          </div>
+          <i class="fa-solid fa-chart-pie fa-2x text-primary"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-8">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="mb-3">Occupancy Percentage by Hospital</h6>
+        <div style="height:220px">
+          <canvas id="occupancyChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="mb-1">Hospitals</h6>
+        {% if location_label %}
+          <div class="text-muted mb-3"><i class="fa fa-location-dot text-primary"></i> {{ location_label }}</div>
+        {% endif %}
+        <ul class="list-group list-group-flush">
+          {% for h in hospitals %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <a href="?hospital_id={{ h.id }}" class="text-decoration-none">{{ h.name }}</a>
+              <span class="badge bg-primary rounded-pill">{{ h.rooms.count }} rooms</span>
+            </li>
+          {% empty %}
+            <li class="list-group-item">No hospitals</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="mb-0">Doctors{% if selected_hospital %} • {{ selected_hospital.name }}{% endif %}</h6>
+          <span class="badge bg-light text-primary border">{{ selected_doctors|length }} total</span>
+        </div>
+        <div class="vstack gap-2">
+          {% for d in selected_doctors %}
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <div class="fw-semibold small">Dr. {{ d.user.get_full_name|default:d.user.username }}</div>
+                <div class="text-muted small">{{ d.specialization|default:"General" }}</div>
+              </div>
+            </div>
+          {% empty %}
+            <div class="text-muted small">No doctors for this hospital.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="mb-0">Attendants{% if selected_hospital %} • {{ selected_hospital.name }}{% endif %}</h6>
+          <span class="badge bg-light text-primary border">{{ selected_attendants|length }} total</span>
+        </div>
+        <div class="vstack gap-2">
+          {% for a in selected_attendants %}
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <div class="fw-semibold small">{{ a.user.get_full_name|default:a.user.username }}</div>
+                <div class="text-muted small">
+                  {% if a.room %}Room: {{ a.room.name }}{% else %}No room{% endif %} •
+                  {% if a.shift %}Shift: {{ a.shift.get_name_display }}{% else %}No shift{% endif %}
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <div class="text-muted small">No attendants for this hospital.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script>
+  window.dashboardConfig = {
+    occupancyApiUrl: "{% url 'hospital:occupancy_api' %}"
+  };
+</script>
+{% endblock %}

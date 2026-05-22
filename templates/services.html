@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}Services • CareMatrix{% endblock %}
+{% block content %}
+<section class="fade-in-up">
+  <div class="card hms-feature-card">
+    <div class="card-body p-4 p-md-5">
+      <div class="hms-kicker mb-3">Platform Services</div>
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <h1 class="display-6 fw-bold mb-3">Designed as a real healthcare website, powered by real workflow modules.</h1>
+          <p class="text-muted mb-0">The frontend now reads like a product website while the backend still drives the hospital, doctor, patient, and appointment experiences behind it.</p>
+        </div>
+        <div class="col-lg-6">
+          <div class="hms-inline-photo">
+            <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80" alt="Modern hospital service desk">
+            <div class="hms-inline-photo-badge">Interactive Service Experience</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-5">
+  <div class="row g-3">
+    <div class="col-md-6 col-xl-3">
+      <div class="card hms-feature-card fade-in-up">
+        <div class="hms-service-photo">
+          <img src="https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=900&q=80" alt="Hospital operations">
+        </div>
+        <div class="card-body">
+          <div class="hms-icon-circle mb-3"><i class="fa-solid fa-hospital"></i></div>
+          <div class="fw-semibold mb-2">Multi-Hospital Management</div>
+          <div class="text-muted small">Centralized hospital setup, room registry, staff allocation, and location-level oversight.</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card hms-feature-card fade-in-up">
+        <div class="hms-service-photo">
+          <img src="https://images.unsplash.com/photo-1580281658629-3b68935b3e1f?auto=format&fit=crop&w=900&q=80" alt="Hospital room and occupancy monitoring">
+        </div>
+        <div class="card-body">
+          <div class="hms-icon-circle mb-3"><i class="fa-solid fa-bed-pulse"></i></div>
+          <div class="fw-semibold mb-2">Room and Occupancy Tracking</div>
+          <div class="text-muted small">Capacity monitoring, live patient counts, and occupancy insights for better decisions.</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card hms-feature-card fade-in-up">
+        <div class="hms-service-photo">
+          <img src="https://images.unsplash.com/photo-1576671081837-49000212a370?auto=format&fit=crop&w=900&q=80" alt="Doctor appointment consultation">
+        </div>
+        <div class="card-body">
+          <div class="hms-icon-circle mb-3"><i class="fa-solid fa-calendar-check"></i></div>
+          <div class="fw-semibold mb-2">Appointment Workflow</div>
+          <div class="text-muted small">Patient requests, doctor reviews, room assignment, and status communication in one flow.</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card hms-feature-card fade-in-up">
+        <div class="hms-service-photo">
+          <img src="https://images.unsplash.com/photo-1583912267550-d7b5c4f8cc52?auto=format&fit=crop&w=900&q=80" alt="Healthcare team planning and scheduling">
+        </div>
+        <div class="card-body">
+          <div class="hms-icon-circle mb-3"><i class="fa-solid fa-clipboard-list"></i></div>
+          <div class="fw-semibold mb-2">Shift Scheduling</div>
+          <div class="text-muted small">Assign attendants to rooms and shifts to support continuity of care on the ground.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-5">
+  <div class="row g-3">
+    <div class="col-lg-6">
+      <div class="card hms-info-card fade-in-up">
+        <div class="card-body">
+          <div class="hms-kicker mb-3">Experience</div>
+          <h2 class="h5 mb-3">Website-quality UI across the journey</h2>
+          <div class="vstack gap-3">
+            <div class="hms-chip"><i class="fa-solid fa-arrow-right"></i> Public landing pages with clear product messaging</div>
+            <div class="hms-chip"><i class="fa-solid fa-arrow-right"></i> Cleaner login and signup flow</div>
+            <div class="hms-chip"><i class="fa-solid fa-arrow-right"></i> Better card layout, spacing, and visual hierarchy</div>
+            <div class="hms-chip"><i class="fa-solid fa-arrow-right"></i> Shared design system applied across dashboards</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card hms-info-card fade-in-up">
+        <div class="card-body">
+          <div class="hms-kicker mb-3">Next Step</div>
+          <h2 class="h5 mb-3">Try the updated flow now</h2>
+          <p class="text-muted">Create an account, log in, and move through the role-based experience from a homepage that finally feels like a proper website.</p>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <a class="btn btn-primary" href="{% url 'accounts:signup' %}">Create Account</a>
+            <a class="btn btn-outline-light" href="{% url 'accounts:login' %}">Login</a>
+            <a class="btn btn-ghost-light" href="{% url 'accounts:home' %}">Back Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

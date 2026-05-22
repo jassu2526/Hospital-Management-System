@@ -1,0 +1,57 @@
+# Render Blueprint
+# This configuration file can be used to automatically deploy both the frontend and backend to Render
+
+services:
+  # --------------------
+  # Backend Web Service
+  # --------------------
+  - type: web
+    name: hms-backend
+    env: python
+    region: ohio
+    plan: free
+    buildCommand: "./deployment/build.sh"
+    startCommand: "gunicorn hms.wsgi:application --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hms-postgres
+          property: connectionString
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: hms-backend.onrender.com # Change this if you use a custom domain
+      - key: CORS_ALLOW_ALL_ORIGINS
+        value: "True"
+
+  # --------------------
+  # Frontend Static Site
+  # --------------------
+  - type: web
+    name: hms-frontend
+    env: static
+    region: ohio
+    plan: free
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: "./frontend/dist"
+    # Note: React Router SPA needs a rewrite rule. In Render dashboard, you must manually add:
+    # Rewrite: /* to /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          name: hms-backend
+          type: web
+          property: host
+        # VITE variables are baked in at build time
+
+databases:
+  # --------------------
+  # PostgreSQL Database
+  # --------------------
+  - name: hms-postgres
+    region: ohio
+    plan: free
+    databaseName: hms_db
+    user: hms_user

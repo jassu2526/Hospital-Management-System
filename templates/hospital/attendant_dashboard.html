@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block title %}Attendant Dashboard{% endblock %}
+{% block content %}
+<div class="card hero shadow-sm overflow-hidden mb-4">
+  <div class="row g-0 align-items-center">
+    <div class="col-md-8 p-4">
+      <div class="title h4 mb-2">Attendant Console</div>
+      <div class="subtitle">Manage room updates and shift details quickly.</div>
+    </div>
+    <div class="col-md-4 text-end p-3">
+      {% load static %}
+      <img src="{% static 'img/hospital.svg' %}" alt="Attendant" class="img-hero">
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card shadow-sm stat-card">
+      <div class="card-body">
+        <div class="stat-label">Capacity</div>
+        <div class="stat-value">{{ room_capacity|default:0 }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm stat-card">
+      <div class="card-body">
+        <div class="stat-label">Current</div>
+        <div class="stat-value">{{ room_current|default:0 }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm stat-card">
+      <div class="card-body">
+        <div class="stat-label">Available</div>
+        <div class="stat-value">{{ room_available|default:0 }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm stat-card">
+      <div class="card-body">
+        <div class="stat-label">Occupancy %</div>
+        <div class="stat-value">{{ room_occupancy|default:0 }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="mb-0">Assigned Room</h6>
+          {% if pending_count %}
+            <span class="badge bg-warning text-dark">Pending Appointments: {{ pending_count }}</span>
+          {% endif %}
+        </div>
+        {% if user.attendant and user.attendant.room %}
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <div class="fw-bold">{{ user.attendant.room.hospital.name }} • {{ user.attendant.room.name }}</div>
+              <div class="text-muted">Capacity: {{ user.attendant.room.capacity }}</div>
+              <div class="text-muted">Current: {{ user.attendant.room.current_patient_count }}</div>
+            </div>
+            <a class="btn btn-primary" href="{% url 'hospital:update_room_count' user.attendant.room.id %}">Update Count</a>
+          </div>
+        {% else %}
+          <p class="text-muted">No room assigned.</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="card shadow-sm mt-3">
+      <div class="card-body p-0">
+        <div class="p-3 d-flex justify-content-between align-items-center">
+          <h6 class="mb-0">Pending Appointment Requests</h6>
+          <span class="text-muted small">Top 10</span>
+        </div>
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Patient</th>
+              <th>Doctor</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in pending_appointments %}
+            <tr>
+              <td>{{ a.date }}</td>
+              <td>{{ a.time }}</td>
+              <td>{{ a.patient }}</td>
+              <td>{{ a.doctor }}</td>
+              <td>{{ a.status }}</td>
+              <td><a class="btn btn-sm btn-outline-primary" href="{% url 'appointments:attendant_status_update' a.id %}">Update</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center text-muted">No pending requests</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="mb-3">Shift</h6>
+        {% if user.attendant and user.attendant.shift %}
+          <div><span class="badge bg-primary">{{ user.attendant.shift.get_name_display }}</span></div>
+          <div class="text-muted mt-2">Timing: {{ user.attendant.shift.start_time }} - {{ user.attendant.shift.end_time }}</div>
+        {% else %}
+          <p class="text-muted">No shift assigned.</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="card shadow-sm mt-3">
+      <div class="card-body">
+        <h6 class="mb-2">Quick Actions</h6>
+        <div class="d-grid gap-2">
+          {% if user.attendant and user.attendant.room %}
+            <a class="btn btn-primary" href="{% url 'hospital:update_room_count' user.attendant.room.id %}">Update Patient Count</a>
+          {% endif %}
+          <a class="btn btn-outline-secondary" href="{% url 'accounts:dashboard' %}">Go to Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

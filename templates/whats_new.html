@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}What’s New • CareMatrix{% endblock %}
+{% block content %}
+<section class="fade-in-up">
+  <div class="card hms-feature-card">
+    <div class="card-body p-4 p-md-5">
+      <div class="hms-kicker mb-3">Latest Updates</div>
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-7">
+          <h1 class="display-6 fw-bold mb-3">The site now looks and behaves more like a real product website.</h1>
+          <p class="text-muted mb-0">This update restores the public-facing experience, improves the auth flow, and aligns the dashboards under one cleaner visual system.</p>
+        </div>
+        <div class="col-lg-5">
+          <div class="hms-stat-grid">
+            <div class="hms-mini-stat">
+              <div class="text-muted small">Frontend Status</div>
+              <div class="h4 fw-bold mb-0">Refreshed</div>
+            </div>
+            <div class="hms-mini-stat">
+              <div class="text-muted small">UX Flow</div>
+              <div class="h4 fw-bold mb-0">Improved</div>
+            </div>
+            <div class="hms-mini-stat">
+              <div class="text-muted small">Website Home</div>
+              <div class="h4 fw-bold mb-0">Restored</div>
+            </div>
+            <div class="hms-mini-stat">
+              <div class="text-muted small">Live Data</div>
+              <div class="h4 fw-bold mb-0">{{ site_stats.appointments }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-5">
+  <div class="card hms-info-card fade-in-up">
+    <div class="card-body">
+      <div class="hms-timeline">
+        <div class="hms-timeline-item">
+          <div class="hms-timeline-dot"></div>
+          <div>
+            <div class="fw-semibold">Homepage turned back into a website landing page</div>
+            <div class="text-muted small">The root route now opens a real landing page with hero content, live stats, featured hospitals, and specialist highlights.</div>
+          </div>
+        </div>
+        <div class="hms-timeline-item">
+          <div class="hms-timeline-dot"></div>
+          <div>
+            <div class="fw-semibold">Shared layout redesigned</div>
+            <div class="text-muted small">Navigation, buttons, cards, footer, alerts, forms, and spacing now follow a single visual direction.</div>
+          </div>
+        </div>
+        <div class="hms-timeline-item">
+          <div class="hms-timeline-dot"></div>
+          <div>
+            <div class="fw-semibold">Auth pages improved</div>
+            <div class="text-muted small">Login and signup are now structured like product onboarding screens instead of bare forms.</div>
+          </div>
+        </div>
+        <div class="hms-timeline-item">
+          <div class="hms-timeline-dot"></div>
+          <div>
+            <div class="fw-semibold">Backend now feeds public pages</div>
+            <div class="text-muted small">The marketing pages receive real hospital, doctor, patient, appointment, and occupancy data from Django views.</div>
+          </div>
+        </div>
+        <div class="hms-timeline-item">
+          <div class="hms-timeline-dot"></div>
+          <div>
+            <div class="fw-semibold">Dashboard styling benefits too</div>
+            <div class="text-muted small">Existing admin, doctor, patient, and attendant screens pick up the updated design system automatically.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-5">
+  <div class="card hms-info-card fade-in-up">
+    <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div>
+        <div class="fw-semibold mb-1">Ready to test the new experience?</div>
+        <div class="text-muted small">Browse the services page or jump straight into the account flow.</div>
+      </div>
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-light" href="{% url 'accounts:services' %}">View Services</a>
+        <a class="btn btn-primary" href="{% url 'accounts:login' %}">Login</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
