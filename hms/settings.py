@@ -15,10 +15,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'unsafe-dev-key-change-me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
-    'hospital-management-system-hzjy.onrender.com'
+    'hospital-management-system-hzjy.onrender.com',
+    'localhost',
+    '127.0.0.1'
 ]
 
 # Application definition
