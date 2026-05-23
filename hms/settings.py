@@ -18,9 +18,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'unsafe-dev-key-change-me')
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'hospital-management-system-hzjy.onrender.com',
-    'localhost',
-    '127.0.0.1',
+    'hospital-management-system-hzjy.onrender.com'
 ]
 
 # Application definition
