@@ -2,9 +2,8 @@
 import os
 import sys
 
-# Entry point for Django's management commands.
+
 def main():
-    """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hms.settings')
     try:
         from django.core.management import execute_from_command_line
@@ -19,4 +18,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
